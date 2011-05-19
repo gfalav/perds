@@ -1,0 +1,23 @@
+<h1>Listing tdatos</h1>
+
+<table>
+  <tr>
+    <th>Tipo</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @tdatos.each do |tdato| %>
+  <tr>
+    <td><%= tdato.tipo %></td>
+    <td><%= link_to 'Show', tdato %></td>
+    <td><%= link_to 'Edit', edit_tdato_path(tdato) %></td>
+    <td><%= link_to 'Destroy', tdato, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Tdato', new_tdato_path %>

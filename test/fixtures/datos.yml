@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  empresa_id: 1
+  tdato_id: 1
+  periodo: 2011-03-27
+  area_id: 1
+  dato: 1.5
+
+two:
+  empresa_id: 1
+  tdato_id: 1
+  periodo: 2011-03-27
+  area_id: 1
+  dato: 1.5

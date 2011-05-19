@@ -1,0 +1,97 @@
+<h2 class="links">Informe de P&eacute;rdidas por Distribuidora</h2>
+<div id="product-list">
+	<table>
+		<tr>
+			<th>Empresa: <%=@cabecera[:empresa] %></th>
+			<th>Area: <%=@cabecera[:area] %></th>
+			<th>Desde el <%=@cabecera[:fini] %></th>
+			<th>Hasta el <%=@cabecera[:ffin] %></th>
+		</tr>
+	</table>
+
+	<table>
+	  <tr>
+		<th class="datoscab">Per&iacute;odo</th>
+		<th class="datoscab">MEM</th>
+		<th class="datoscab">Terceros</th>
+		<th class="datoscab">Generaci&oacute;n</th>
+		<th class="datoscab">Tot Ingreso</th>
+		<th class="datoscab">Clientes Propios</th>
+		<th class="datoscab">Recuperos</th>
+		<th class="datoscab">Consumos Propios</th>
+		<th class="datoscab">Gume</th>
+		<th class="datoscab">Guma</th>
+		<th class="datoscab">Tot Egreso</th>
+		<th class="datoscab">P&eacute;rdidas</th>
+		<th class="datoscab">% Perds</th>
+		<th class="datoscab">Tot Ing Anual</th>
+		<th class="datoscab">Tot Eng Anual</th>
+		<th class="datoscab">P&eacute;rdidas Anual</th>
+		<th class="datoscab">% Perds Anual</th>
+	  </tr>
+	
+	<br/>
+	
+	<% @tabla.each do |tabla| %>
+	  <tr class="<%= cycle('list-line-odd', 'list-line-even') %>" >
+		<td class="cuentas"><%= tabla[:periodo] %></td>
+		<td class="datos"><%= number_with_precision(tabla[:mem],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:otr],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:gen],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:ing],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:dis],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:rec],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:aut],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:gme],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:gma],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:egr],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:per],:precision=>3) %></td>
+		<td class="datos"><%= number_to_percentage(tabla[:pep],:precision=>1) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:ina],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:ega],:precision=>3) %></td>
+		<td class="datos"><%= number_with_precision(tabla[:pera],:precision=>3) %></td>
+		<td class="datos"><%= number_to_percentage(tabla[:pepa],:precision=>1) %></td>
+	  </tr>
+	<% end %>
+	</table>
+	
+	
+	<br />
+	<div id="chart1" style="height:300px; width:100%"></div>	
+	
+	<%= form_tag(:informe_index,:method=>'get') do %>
+		Desde: <%= text_field_tag('fini',@cabecera[:fini],:size=>5) %>
+		Hasta: <%= text_field_tag('ffin',@cabecera[:ffin],:size=>5) %>
+		Seleccione empresa:
+		<%= select_tag('empresa', options_from_collection_for_select(@cabecera[:arrempresas], :id, :nombre, @cabecera[:empresa_id])  ) %>
+		u otras &aacute;reas de <%=@cabecera[:empresa] %>
+		<%= select_tag('area',    options_from_collection_for_select(@cabecera[:arrareas], :id, :nombre, @cabecera[:area_id])  ) %>
+		<%= hidden_field_tag('empresa_id',@cabecera[:empresa_id]) %>
+		<%= submit_tag('Informe') %>
+	<% end %>
+
+	Descargue los informes desde aqu&iacute;:
+	<%= link_to 'Edesal', 'perds/informes/Edesal.rar' %>
+	<%= link_to 'Edelar', 'perds/informes/Edelar.rar' %>
+	<%= link_to 'Edesa',  'perds/informes/Edesa.rar'  %>
+</div>
+
+<script>
+$(document).ready(function() {
+  $( "#fini" ).datepicker({ dateFormat: 'yymm' });
+  $( "#ffin" ).datepicker({ dateFormat: 'yymm' });
+  $.jqplot.config.enablePlugins = true;
+
+  ticks = <%= raw(@ticks) %>;
+  line1=<%= raw(@serie1) %>;
+  line2=<%= raw(@serie2) %>;
+  plot = $.jqplot('chart1', [line1,line2], {
+		 title:'P&eacute;rdidas Anualizadas',
+		 series:[ {label:'Anualizada', renderer:$.jqplot.BarRenderer,rendererOptions: {fillToZero: true}}, {label:'Mes',lineWidth:4, markerOptions: { style:'diamond' }} ],
+		 axes: {
+				xaxis:{label: 'Periodo', renderer:$.jqplot.CategoryAxisRenderer, ticks: ticks},
+				yaxis:{label:'% Perds', tickOptions:{formatString:'%.1f'},max: <%=@max %>,min: <%=@min %>}
+		 }
+  });
+}); 
+</script>

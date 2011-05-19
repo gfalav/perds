@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Empresa:</b>
+  <%= @dato.empresa_id %>
+</p>
+
+<p>
+  <b>Tdato:</b>
+  <%= @dato.tdato_id %>
+</p>
+
+<p>
+  <b>Periodo:</b>
+  <%= @dato.periodo %>
+</p>
+
+<p>
+  <b>Area:</b>
+  <%= @dato.area_id %>
+</p>
+
+<p>
+  <b>Dato:</b>
+  <%= @dato.dato %>
+</p>
+
+
+<%= link_to 'Edit', edit_dato_path(@dato) %> |
+<%= link_to 'Back', datos_path %>

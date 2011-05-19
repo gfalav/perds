@@ -1,0 +1,31 @@
+<h1>Listing datos</h1>
+
+<table>
+  <tr>
+    <th>Empresa</th>
+    <th>Tdato</th>
+    <th>Periodo</th>
+    <th>Area</th>
+    <th>Dato</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @datos.each do |dato| %>
+  <tr>
+    <td><%= dato.empresa_id %></td>
+    <td><%= dato.tdato_id %></td>
+    <td><%= dato.periodo %></td>
+    <td><%= dato.area_id %></td>
+    <td><%= dato.dato %></td>
+    <td><%= link_to 'Show', dato %></td>
+    <td><%= link_to 'Edit', edit_dato_path(dato) %></td>
+    <td><%= link_to 'Destroy', dato, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dato', new_dato_path %>
